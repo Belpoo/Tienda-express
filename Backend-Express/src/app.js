@@ -7,7 +7,20 @@ const cartRoutes = require('./routes/cart.routes');
 
 const app = express();
 
-app.use(cors());
+// Cons restringido
+// permite solo nuestro front
+// restringe el acceso a otros dominios
+const allowedOrigins = [
+  "http://localhost:5173", // Vite dev
+];
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);
