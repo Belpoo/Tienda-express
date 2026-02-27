@@ -1,31 +1,56 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Registro() {
 
+  const navigate = useNavigate();
+
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
 
-    if (!email || !password) {
+    if (!name || !email || !password) {
       setMessage("Completa todos los campos");
       return;
     }
 
-    // Simulamos creación de cuenta
-    setMessage("Tu cuenta ha sido creada con éxito 🎉");
+    try {
+      const response = await fetch("http://localhost:3000/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password })
+      });
 
-    setTimeout(() => {
-      window.location.href = "/login";
-    }, 1500);
+      const data = await response.json();
+
+      if (!response.ok) {
+        setMessage(data.error || "Error al crear la cuenta");
+        return;
+      }
+
+      setMessage("¡Cuenta creada con éxito! 🎉 Redirigiendo...");
+      setTimeout(() => navigate("/Login"), 1500);
+
+    } catch (error) {
+      setMessage("Error al conectar con el servidor");
+    }
   };
 
   return (
     <div style={containerStyle}>
       <div style={cardStyle}>
         <h2>Crear Cuenta</h2>
+
+        <input
+          type="text"
+          placeholder="Nombre completo"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          style={inputStyle}
+        />
 
         <input
           type="email"
