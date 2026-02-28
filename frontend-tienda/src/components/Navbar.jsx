@@ -9,8 +9,6 @@ function Navbar() {
       <Link to="/cart">Carrito</Link>
       <Link to="/favorites">Favoritos</Link>
       <Link to="/orders">Órdenes</Link>
-      <Link to="/register">Registro</Link>
-      <Link to="/login">Login</Link>
     </nav>
   );
 }

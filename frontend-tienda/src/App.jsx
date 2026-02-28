@@ -4,6 +4,9 @@ import { useState } from "react";
 import Home from "./pages/Home";
 import Register from "./pages/Registro";
 import Login from "./pages/Login";
+import Cart from "./pages/Cart";
+import Navbar from "./components/Navbar";
+import ProductDetail from "./pages/ProductDetail";
 
 function App() {
 
@@ -13,36 +16,39 @@ function App() {
   );
 
   return (
-    <Routes>
+    <>
+      {isAuthenticated && <Navbar />}
 
-      {/* Rutas públicas */}
-      <Route
-        path="/Login"
-        element={<Login setIsAuthenticated={setIsAuthenticated} />}
-      />
+      <Routes>
+        {/* Públicas */}
+        <Route
+          path="/login"
+          element={<Login setIsAuthenticated={setIsAuthenticated} />}
+        />
 
-      <Route path="/Registro" element={<Register />} />
+        <Route path="/registro" element={<Register />} />
 
-      {/* Rutas protegidas */}
-      {isAuthenticated && (
-        <>
-          <Route path="/admin" element={<Home />} />
-          <Route path="/Home" element={<Home />} />
-        </>
-      )}
+        {/* Privadas */}
+        {isAuthenticated && (
+          <>
+            <Route path="/home" element={<Home />} />
+            <Route path="/admin" element={<Home />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/product/:id" element={<ProductDetail />} />
+          </>
+        )}
 
-      {/* Redirección automática */}
-      <Route
-        path="*"
-        element={
-          isAuthenticated
-            ? <Navigate to="/Home" />
-            : <Navigate to="/Login" />
-        }
-      />
-
-    </Routes>
+        {/* Redirect */}
+        <Route
+          path="*"
+          element={
+            isAuthenticated
+              ? <Navigate to="/home" />
+              : <Navigate to="/login" />
+          }
+        />
+      </Routes>
+    </>
   );
 }
-
 export default App;
