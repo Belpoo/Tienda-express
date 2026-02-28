@@ -1,7 +1,9 @@
 const Product = require('../models/Product');
 
-exports.createProduct = async (req, res) => {
+exports.createProduct = async (protect, req, res) => {
   try {
+    if(protect.role !== 'admin') 
+      return res.status(403).json({ message: 'Acceso denegado' });
     const product = await Product.create(req.body);
     res.status(201).json(product);
   } catch (error) {
