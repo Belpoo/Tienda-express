@@ -56,3 +56,12 @@ exports.logout = (req, res) => {
     // El cliente es responsable de eliminar el token de su almacenamiento.
     res.json({ message: 'Sesión cerrada correctamente. Elimina el token en el cliente.' });
 };
+
+exports.getUsers = async (req, res) => {
+    try {
+        const users = await User.find();
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
