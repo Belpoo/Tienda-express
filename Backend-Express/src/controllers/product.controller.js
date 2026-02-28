@@ -1,9 +1,7 @@
 const Product = require('../models/Product');
 
-exports.createProduct = async (protect, req, res) => {
+exports.createProduct = async (req, res) => {
   try {
-    if(protect.role !== 'admin') 
-      return res.status(403).json({ message: 'Acceso denegado' });
     const product = await Product.create(req.body);
     res.status(201).json(product);
   } catch (error) {
@@ -31,5 +29,23 @@ exports.getProductById = async (req, res) => {
     res.json(product);
   } catch (error) {
     res.status(500).json({ msg: "Error al obtener producto" });
+  }
+};
+
+exports.updateProduct = async (req, res) => {
+  try {
+    const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.json(product);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+exports.deleteProduct = async (req, res) => {
+  try {
+    const product = await Product.findByIdAndDelete(req.params.id);
+    res.status(204).json(product);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };
