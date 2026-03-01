@@ -51,10 +51,8 @@ exports.login = async (req, res) => {
     }
 };
 
-exports.logout = (req, res) => {
-    // Con JWT el servidor no guarda sesión.
-    // El cliente es responsable de eliminar el token de su almacenamiento.
-    res.json({ message: 'Sesión cerrada correctamente. Elimina el token en el cliente.' });
+exports.logout = async (req, res) => {
+  res.status(200).json({ msg: "Logout exitoso" });
 };
 
 exports.getUsers = async (req, res) => {

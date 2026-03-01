@@ -10,5 +10,7 @@ router.post('/login', login);
 router.post('/logout', logout);
 // GET /api/auth/users
 router.get('/users', getUsers);
+// POST /api/auth/logout
+router.post('/logout', protect, logout);
 
 module.exports = router;
