@@ -1,9 +1,27 @@
 import { useEffect, useState } from "react";
-import API from "../services/api";
+import { useNavigate } from "react-router-dom"
+import API from "../../services/api";
+import { logout } from "../../components/Navbar";
 
 function AdminProducts() {
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const deleteProduct = async (id) => {
+    const confirmDelete = window.confirm("¿Seguro que deseas eliminar este producto?");
+    if (!confirmDelete) return;
+
+    try {
+      await API.delete(`/products/delete/${id}`);
+
+      // Actualiza estado sin recargar
+      setProducts(products.filter((p) => p._id !== id));
+
+    } catch (error) {
+      console.log(error.response?.data || error.message);
+    }
+  };
 
   const fetchProducts = async () => {
     try {
@@ -25,10 +43,22 @@ function AdminProducts() {
   }
 
   return (
+    
     <div style={container}>
+      <button onClick={logout}>Cerrar sesión</button> 
       <div style={headerSection}>
         <h2 style={title}>Inventario 🛠️</h2>
         <p style={subtitle}>{products.length} productos</p>
+      </div>
+
+      <div style={headerContainer}>
+        <h2 style={title}>Productos</h2>
+        <button
+          style={addBtn}
+          onClick={() => navigate("/admin/products/create")}
+        >
+          + Agregar Producto
+        </button>
       </div>
 
       <div style={tableWrapper}>
@@ -47,8 +77,21 @@ function AdminProducts() {
                 <td style={cell}>{product.name}</td>
                 <td style={priceCell}>${product.price}</td>
                 <td style={actionCell}>
-                  <button style={editBtn} title="Editar">✏️</button>
-                  <button style={deleteBtn} title="Eliminar">🗑️</button>
+                  <button
+                    style={editBtn}
+                    title="Editar"
+                    onClick={() => navigate(`/admin/products/edit/${product._id}`)}
+                  >
+                    ✏️
+                  </button>
+
+                  <button
+                    style={deleteBtn}
+                    title="Eliminar"
+                    onClick={() => deleteProduct(product._id)}
+                  >
+                    🗑️
+                  </button>
                 </td>
               </tr>
             ))}
@@ -62,6 +105,22 @@ function AdminProducts() {
 export default AdminProducts;
 
 // ========== ESTILOS ==========
+
+const headerContainer = {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  marginBottom: "20px"
+};
+
+const addBtn = {
+  padding: "10px 16px",
+  background: "#333",
+  color: "#fff",
+  border: "none",
+  borderRadius: "6px",
+  cursor: "pointer"
+};
 
 const loadingContainer = {
   display: "flex",

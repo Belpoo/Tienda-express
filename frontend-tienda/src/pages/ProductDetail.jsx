@@ -19,6 +19,7 @@ function ProductDetail() {
     const fetchProduct = async () => {
       try {
         const res = await API.get(`/products/${id}`);
+        console.log(res.data);
         setProduct(res.data);
       } catch (error) {
         setMessage("❌ Error al cargar el producto");

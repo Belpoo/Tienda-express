@@ -29,23 +29,24 @@ function Cart() {
     return <p style={styles.centerText}>Cargando carrito...</p>;
   }
 
-  if (!cart || cart.items.length === 0) {
-    return <p style={styles.centerText}>Tu carrito está vacío 🛒</p>;
+  if (!cart || !cart.items || cart.items.length === 0) {
+  return <p style={styles.centerText}>Tu carrito está vacío 🛒</p>;
   }
+  //Validar que los productos existan
+  const validItems = cart.items.filter(item => item.product);
 
   // Calcular total
-  const total = cart.items.reduce(
-    (sum, item) => sum + item.product.price * item.quantity,
-    0
-  );
-
+  const total = validItems.reduce(
+  (sum, item) => sum + item.product.price * item.quantity,
+  0
+);
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>🛒 Tu carrito</h1>
 
       {/* Productos */}
       <div style={styles.itemsList}>
-        {cart.items.map((item) => (
+        {validItems.map((item) => (
           <div key={item.product._id} style={styles.item}>
             <div style={styles.itemInfo}>
               <h3 style={styles.itemName}>{item.product.name}</h3>

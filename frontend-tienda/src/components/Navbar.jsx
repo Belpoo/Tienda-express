@@ -7,15 +7,14 @@ function Navbar() {
     <nav style={navStyle}>
       <Link to="/">Home</Link>
       <Link to="/cart">Carrito</Link>
-      <Link to="/favorites">Favoritos</Link>
-      <Link to="/orders">Órdenes</Link>
+      <button onClick={logout}>Cerrar sesión</button> 
     </nav>
   );
 }
 
-const logout = () => {
+ export const logout = () => {
   localStorage.removeItem("user");
-  window.location.reload(); // recarga la app
+  window.location.href = "/login"; // recarga la app
 };
 
 const navStyle = {

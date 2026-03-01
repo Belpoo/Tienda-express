@@ -5,9 +5,11 @@ import Home from "./pages/Home";
 import Register from "./pages/Registro";
 import Login from "./pages/Login";
 import Cart from "./pages/Cart";
-import Navbar from "./components/Navbar";
 import ProductDetail from "./pages/ProductDetail";
-import AdminProducts from "./pages/AdminProducts";
+import AdminProducts from "./pages/admin/AdminProducts";
+import EditProduct from "./pages/admin/EditProduct";
+import NewProduct from "./pages/admin/NewProduct";
+import UserLayout from "./pages/UserLayout";
 
 function App() {
 
@@ -18,7 +20,7 @@ function App() {
 
   return (
     <>
-      {isAuthenticated && <Navbar />}
+      {isAuthenticated}
 
       <Routes>
         {/* Públicas */}
@@ -27,17 +29,26 @@ function App() {
           element={<Login setIsAuthenticated={setIsAuthenticated} />}
         />
 
-        <Route path="/registro" element={<Register />} />
+        <Route path="/registro"
+          element={<Register />}
+        />
 
 
         {/* Privadas */}
         {isAuthenticated && (
           <>
-            <Route path="/home" element={<Home />} />
-            <Route path="/admin" element={<AdminProducts />} />
-            <Route path="/cart" element={<Cart />} />
+
+            {/* Rutas con navbar */}
+            <Route element={<UserLayout />}>
+              <Route path="/home" element={<Home />} />
+              <Route path="/cart" element={<Cart />} />
+            </Route>
+
             <Route path="/product/:id" element={<ProductDetail />} />
+            <Route path="/admin" element={<AdminProducts />} />
             <Route path="/admin/products" element={<AdminProducts />} />
+            <Route path="/admin/products/edit/:id" element={<EditProduct />} />
+            <Route path="/admin/products/create" element={<NewProduct />} />
           </>
         )}
 
