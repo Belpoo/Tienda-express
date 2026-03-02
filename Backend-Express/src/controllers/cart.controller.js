@@ -65,21 +65,49 @@ exports.addToCart = async (req, res) => {
 };
 
 exports.removeFromCart = async (req, res) => {
-    try {
-        const { productId } = req.params;
-        const cart = await Cart.findOne({ user: req.user.id });
+  try {
+    const { productId } = req.params;
+    const cart = await Cart.findOne({ user: req.user.id });
 
-        if (!cart) return res.status(404).json({ message: 'Carrito no encontrado' });
-
-        cart.items = cart.items.filter(item => item.product.toString() !== productId);
-
-        await cart.save();
-        await cart.populate('items.product');
-        res.json(cart);
-
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+    if (!cart) {
+      return res.status(404).json({ message: "Carrito no encontrado" });
     }
+
+    const item = cart.items.find(item => {
+      if (!item.product) return false;
+
+      const id = item.product._id
+        ? item.product._id.toString()
+        : item.product.toString();
+
+      return id === productId;
+    });
+
+    if (!item) {
+      return res.status(404).json({ message: "Producto no encontrado en el carrito" });
+    }
+
+    // 🔥 Aquí está la lógica correcta
+    if (item.quantity > 1) {
+      item.quantity -= 1;
+    } else {
+      cart.items = cart.items.filter(item => {
+        const id = item.product._id
+          ? item.product._id.toString()
+          : item.product.toString();
+        return id !== productId;
+      });
+    }
+
+    await cart.save();
+    await cart.populate("items.product");
+
+    res.json(cart);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error.message });
+  }
 };
 
 exports.clearCart = async (req, res) => {

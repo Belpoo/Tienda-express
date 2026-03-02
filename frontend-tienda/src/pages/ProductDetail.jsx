@@ -65,6 +65,8 @@ function ProductDetail() {
 
         <p style={styles.price}>${product.price}</p>
 
+        <p><strong>Categoría:</strong> {product.category}</p>
+
         <p style={styles.description}>
           {product.description || "Sin descripción disponible"}
         </p>
@@ -73,7 +75,6 @@ function ProductDetail() {
           <button onClick={handleAddToCart} style={styles.buttonPrimary}>
             🛒 Agregar al carrito
           </button>
-          <button style={styles.buttonSecondary}>❤️ Favoritos</button>
         </div>
 
         {message && (

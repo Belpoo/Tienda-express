@@ -9,6 +9,15 @@ function Cart() {
   const [cart, setCart] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const handleRemove = async (productId) => {
+    try {
+      const res = await API.delete(`/cart/${productId}`);
+      setCart(res.data); // actualiza el carrito con lo que devuelve el backend
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   // Obtener carrito del backend
   useEffect(() => {
     const fetchCart = async () => {
@@ -30,16 +39,16 @@ function Cart() {
   }
 
   if (!cart || !cart.items || cart.items.length === 0) {
-  return <p style={styles.centerText}>Tu carrito está vacío 🛒</p>;
+    return <p style={styles.centerText}>Tu carrito está vacío 🛒</p>;
   }
   //Validar que los productos existan
-  const validItems = cart.items.filter(item => item.product);
+  const validItems = cart.items.filter((item) => item.product);
 
   // Calcular total
   const total = validItems.reduce(
-  (sum, item) => sum + item.product.price * item.quantity,
-  0
-);
+    (sum, item) => sum + item.product.price * item.quantity,
+    0,
+  );
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>🛒 Tu carrito</h1>
@@ -53,6 +62,13 @@ function Cart() {
               <p style={styles.itemQuantity}>Cantidad: {item.quantity}</p>
             </div>
             <p style={styles.itemPrice}>${item.product.price}</p>
+
+            <button
+              onClick={() => handleRemove(item.product._id)}
+              style={styles.removeButton}
+            >
+              ❌
+            </button>
           </div>
         ))}
       </div>
@@ -60,7 +76,7 @@ function Cart() {
       {/* Total */}
       <div style={styles.footer}>
         <h2 style={styles.total}>Total: ${total.toFixed(2)}</h2>
-       {/* <button style={styles.checkoutButton}>Proceder al pago</button> */}
+        {/* <button style={styles.checkoutButton}>Proceder al pago</button> */}
       </div>
     </div>
   );
@@ -71,6 +87,15 @@ const styles = {
     maxWidth: "700px",
     margin: "40px auto",
     padding: "20px",
+  },
+  removeButton: {
+    backgroundColor: "#e74c3c",
+    color: "#fff",
+    border: "none",
+    borderRadius: "4px",
+    padding: "6px 10px",
+    cursor: "pointer",
+    fontSize: "12px",
   },
   title: {
     margin: "0 0 24px 0",
