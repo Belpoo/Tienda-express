@@ -22,11 +22,14 @@ function Login({ setIsAuthenticated }) {
 
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:3000/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await fetch(
+        "https://tienda-expressbackend.onrender.com/api/auth/login",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        },
+      );
 
       const data = await response.json();
 
@@ -75,26 +78,26 @@ function Login({ setIsAuthenticated }) {
           style={styles.input}
         />
 
-        <button
-          onClick={handleLogin}
-          disabled={loading}
-          style={styles.button}
-        >
+        <button onClick={handleLogin} disabled={loading} style={styles.button}>
           {loading ? "Ingresando..." : "Ingresar"}
         </button>
 
         {message && (
-          <p style={{
-            ...styles.message,
-            color: message.includes("✅") ? "#27ae60" : "#e74c3c"
-          }}>
+          <p
+            style={{
+              ...styles.message,
+              color: message.includes("✅") ? "#27ae60" : "#e74c3c",
+            }}
+          >
             {message}
           </p>
         )}
 
         <p style={styles.link}>
           ¿No tienes cuenta?{" "}
-          <Link to="/registro" style={styles.linkText}>Regístrate aquí</Link>
+          <Link to="/registro" style={styles.linkText}>
+            Regístrate aquí
+          </Link>
         </p>
       </div>
     </div>
