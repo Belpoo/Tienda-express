@@ -28,7 +28,7 @@ function EditProduct() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await API.get(`/products/${id}`);
+        const res = await API.get(`/api/products/${id}`);
         setProduct(res.data);
       } catch (error) {
         console.log(error);
@@ -44,7 +44,7 @@ function EditProduct() {
     e.preventDefault();
 
     try {
-      await API.put(`/products/update/${id}`, product);
+      await API.put(`/api/products/update/${id}`, product);
       navigate("/admin/products");
     } catch (error) {
       console.log(error.response?.data || error.message);

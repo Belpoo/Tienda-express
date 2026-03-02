@@ -13,7 +13,7 @@ function AdminProducts() {
     if (!confirmDelete) return;
 
     try {
-      await API.delete(`/products/delete/${id}`);
+      await API.delete(`/api/products/delete/${id}`);
 
       // Actualiza estado sin recargar
       setProducts(products.filter((p) => p._id !== id));
@@ -25,7 +25,7 @@ function AdminProducts() {
 
   const fetchProducts = async () => {
     try {
-      const res = await API.get("/products");
+      const res = await API.get("/api/products");
       setProducts(res.data);
     } catch (error) {
       console.log(error);

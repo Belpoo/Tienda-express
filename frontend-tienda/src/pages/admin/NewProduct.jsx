@@ -28,8 +28,8 @@ function NewProduct() {
     setLoading(true);
 
     try {
-      await API.post("/products", product);
-      navigate("/admin/products");
+      await API.post("/api/products", product);
+      navigate("/api/admin/products");
     } catch (error) {
       console.log(error.response?.data || error.message);
     } finally {
