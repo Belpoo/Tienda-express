@@ -8,6 +8,11 @@ function AdminProducts() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const logout = () => {
+    localStorage.removeItem("user");
+    navigate("/login");
+  } 
+
   const deleteProduct = async (id) => {
     const confirmDelete = window.confirm("¿Seguro que deseas eliminar este producto?");
     if (!confirmDelete) return;
