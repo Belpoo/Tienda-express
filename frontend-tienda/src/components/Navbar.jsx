@@ -14,7 +14,7 @@ function Navbar() {
 
  export const logout = () => {
   localStorage.removeItem("user");
-  window.location.href = "/login"; // recarga la app
+  window.location.href = "https://tienda-expressbackend.onrender.com/login"; // recarga la app
 };
 
 const navStyle = {
