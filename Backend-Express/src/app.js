@@ -11,12 +11,18 @@ const app = express();
 // permite solo nuestro front
 // restringe el acceso a otros dominios
 const allowedOrigins = [
-  "http://localhost:5173", // Vite dev
+  "https://tienda-express-oj4q.onrender.com", // Vite dev
 ];
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("No permitido por CORS"));
+      }
+    },
     credentials: true,
   })
 );
