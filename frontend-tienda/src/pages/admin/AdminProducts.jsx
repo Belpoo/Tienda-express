@@ -9,7 +9,7 @@ function AdminProducts() {
   const [loading, setLoading] = useState(true);
 
   const logout = () => {
-    localStorage.removeItem("user");
+    localStorage.clear();
     navigate("/login");
   } 
 
