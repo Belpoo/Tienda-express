@@ -11,7 +11,7 @@ function Cart() {
 
   const handleRemove = async (productId) => {
     try {
-      const res = await API.delete(`api/cart/${productId}`);
+      const res = await API.delete(`/api/cart/${productId}`);
       setCart(res.data); // actualiza el carrito con lo que devuelve el backend
     } catch (error) {
       console.error(error);
