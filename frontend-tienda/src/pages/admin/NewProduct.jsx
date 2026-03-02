@@ -2,13 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../../services/api";
 
-const categories = [
-  "Lácteos",
-  "Cereales",
-  "Bebidas",
-  "Snacks",
-  "Aseo"
-];
+const categories = ["Lácteos", "Cereales", "Bebidas", "Snacks", "Aseo"];
 
 function NewProduct() {
   const navigate = useNavigate();
@@ -18,7 +12,7 @@ function NewProduct() {
     description: "",
     price: "",
     stock: "",
-    category: ""
+    category: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -29,7 +23,7 @@ function NewProduct() {
 
     try {
       await API.post("/api/products", product);
-      navigate("/api/admin/products");
+      navigate("/admin/products");
     } catch (error) {
       console.log(error.response?.data || error.message);
     } finally {
@@ -49,9 +43,7 @@ function NewProduct() {
               style={input}
               type="text"
               value={product.name}
-              onChange={(e) =>
-                setProduct({ ...product, name: e.target.value })
-              }
+              onChange={(e) => setProduct({ ...product, name: e.target.value })}
               required
             />
           </div>
@@ -126,8 +118,6 @@ function NewProduct() {
             <button type="submit" style={saveBtn} disabled={loading}>
               {loading ? "Creando..." : "Crear Producto"}
             </button>
-
-            
           </div>
         </form>
       </div>
@@ -142,7 +132,7 @@ export default NewProduct;
 const container = {
   maxWidth: "600px",
   margin: "40px auto",
-  padding: "0 20px"
+  padding: "0 20px",
 };
 
 const card = {

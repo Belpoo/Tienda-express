@@ -1,8 +1,15 @@
 //Barra de navegación
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Navbar() {
+  const navigate = useNavigate();
+  const logout = () => {
+    localStorage.removeItem("user");
+    navigate("/login");
+  }
   return (
+    
     //Link para navegar sin recargar la página.
     <nav style={navStyle}>
       <Link to="/">Home</Link>
@@ -11,11 +18,6 @@ function Navbar() {
     </nav>
   );
 }
-
- export const logout = () => {
-  localStorage.removeItem("user");
-  window.location.href = "/login"; // recarga la app
-};
 
 const navStyle = {
   display: "flex",
